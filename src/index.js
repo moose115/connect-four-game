@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import Board from './Board';
 
 
   //Create a Pixi Application
@@ -21,4 +22,9 @@ PIXI.loader
 function setup() {
     let sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_red.png"].texture);
     app.stage.addChild(sprite);
+    let x = 33;
+    let y = 33;
+
+    sprite.position.set(x, y);
+    let b = new Board();
 }

@@ -1,0 +1,21 @@
+Game rules:
+  -players move alternately
+  -they drop one piece per turn in chosen column
+  -goal is to connect 4 same colored pieces vertically, horizontally or diagonally
+
+Game mechanics:
+  -turn system
+  -win condition check
+  -UI
+
+  Stage II production (multiplayer):
+    -synchronize gamestates
+    -lock inactive player
+    -lan server hosting (maybe even internet)
+
+TO DOS:
+  -draw board (tile based)
+  -piece dropdown
+  -locking piece on board
+  -piece over-board hover effect
+  -sections based on columns
