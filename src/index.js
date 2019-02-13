@@ -27,4 +27,7 @@ function setup() {
 
     sprite.position.set(x, y);
     let b = new Board();
+    console.log(b.board);
+    
 }
+

@@ -1,10 +1,28 @@
 import States from './States';
+import * as PIXI from 'pixi.js';
 
 export default class Board {
-
+  
+  
   constructor() {
-    console.log(initBoard());
-    console.log(States.red);
+
+    this.board = initBoard();
+
+    PIXI.loader
+      .add('../src/vendor/board.png')
+      .load( () => {
+        const size = 64;
+
+        for(let i = 0; i < this.board.length; i++) {
+          const x = size*i%7;
+          const y = size*i%6;
+
+          const boardSprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/board.png"].texture);
+
+          boardSprite.position.set(x, y);
+
+        }
+      });
   }
 
 }
@@ -16,6 +34,5 @@ function initBoard() {
       arr.push(States.empty);
     }
   }
-  console.log(arr);
   return arr;
 }
