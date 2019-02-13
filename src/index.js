@@ -16,18 +16,25 @@ app.renderer.autoResize = true;
 app.renderer.resize(window.innerWidth, window.innerHeight);
 
 PIXI.loader
-  .add("../src/vendor/token_red.png")
+  .add("../src/vendor/board.png")
   .load(setup);
 
 function setup() {
-    let sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_red.png"].texture);
-    app.stage.addChild(sprite);
-    let x = 33;
-    let y = 33;
 
-    sprite.position.set(x, y);
     let b = new Board();
     console.log(b.board);
-    
+
 }
 
+function drawBoard() {
+
+  for (let i = 0; i < 42; i++) {
+    const sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/board.png"].texture);
+    app.stage.addChild(sprite);
+    const x = 64*(i%7);
+    const y = 64*(i%6);
+    sprite.position.set(x, y);
+    sprite.width = 64;
+    sprite.height = 64;
+  }
+}
