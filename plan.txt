@@ -14,8 +14,8 @@ Game mechanics:
     -lan server hosting (maybe even internet)
 
 TO DOS:
-  -draw board (tile based)
+  -draw board (tile based) #check
   -piece dropdown
   -locking piece on board
   -piece over-board hover effect
-  -sections based on columns
+  -sections based on columns #check

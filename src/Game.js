@@ -5,14 +5,13 @@ import Board from './Board';
 export default class Game {
 
   constructor(app) {
-    this.app = app
+    this.app = app;
+    this.currentColor = 'red';
   }
 
   setup() {
-
-    //drawBoard();
     const board = new Board();
-    this.app.ticker.add(delta => this.update(delta, board));
+
 
     for (let i = 0; i < 7; i++) {
 
@@ -25,43 +24,53 @@ export default class Game {
       rectangle.buttonMode = true;
       rectangle.on('click', () => {
         console.log(i);
+        this.putToken(board, i, 0, this.currentColor);
 
       });
     }
+    this.drawBoard(board);
   }
 
   drawBoard(board) {
 
+    this.drawTokens(board.boardArr);
+    for (let col = 0; col < 7; col++) {
+      for (let row = 0; row < 6; row++) {
 
-    for (let i = 0; i < 42; i++) {
 
-      this.drawToken(board.board[i].color, i%7, i%6);
-
-      const sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/board.png"].texture);
-      this.app.stage.addChild(sprite);
-      const x = 64*(i%7);
-      const y = 64*(i%6);
-      sprite.position.set(x, y);
-      sprite.width = 64;
-      sprite.height = 64;
+        const sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/board.png"].texture);
+        this.app.stage.addChild(sprite);
+        const x = 64*(col);
+        const y = 64*(row);
+        sprite.position.set(x, y);
+        sprite.width = 64;
+        sprite.height = 64;
+      }
     }
+    console.table(board.boardArr);
   }
 
-  drawToken(color, column, row, board) {
+  drawTokens(boardArr, column, row, board) {
 
-    let sprite;
-    if(color === 'none') return;
-    if(color === 'red')  sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_red.png"].texture);
-    else sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_yellow.png"].texture);
-    sprite.width = 64;
-    sprite.height = 64;
-    sprite.position.set(64*column, 64*row);
+    boardArr.forEach( (el, i, arr) => {
+      let sprite;
+      if(el.color === 'none') return;
+      if(el.color === 'red')  sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_red.png"].texture);
+      else sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_yellow.png"].texture);
+      sprite.width = 64;
+      sprite.height = 64;
+      sprite.position.set(64*(i%7), 64*(1%6));
 
-    for (let i = 0; i < 7; i++) {
-      const element = [i];
 
-    }
-    this.app.stage.addChild(sprite);
+      this.app.stage.addChild(sprite);
+    });
+
+  }
+
+  putToken(board, column, row, color) {
+    board.boardArr[column].color = color;
+    board.boardArr[column].status = 'occupied';
+    this.drawBoard(board);
   }
 
   update(delta, board) {

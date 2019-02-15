@@ -26,9 +26,3 @@ PIXI.loader
     const g = new Game(app);
     g.setup();
   });
-
-
-
-
-
-console.log(Game.setup);

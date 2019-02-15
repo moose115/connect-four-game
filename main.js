@@ -15,5 +15,5 @@ function createWindow() {
     // win.loadFile('index.html');
 }
 
-app.disableHardwareAcceleration();
+//app.disableHardwareAcceleration();
 app.on('ready', createWindow);
