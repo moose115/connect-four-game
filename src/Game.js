@@ -26,6 +26,7 @@ export default class Game {
       rectangle.on('click', () => {
         console.log(i);
         this.putToken(board, i, 0, this.currentColor);
+        this.currentColor = (this.currentColor === 'red' ? 'yellow' : 'red');
 
       });
     }
@@ -48,41 +49,45 @@ export default class Game {
         sprite.height = 64;
       }
     }
-    console.table(board.boardArr);
+    //console.table(board.boardArr);
   }
 
   drawTokens(boardArr, column, row = 0, board) {
 
-    boardArr.forEach( (el, i, arr) => {
+    boardArr.forEach( (col, i) => {
 
-      const token = new Token(el.color);
-      const sprite = token.create();
+      col.forEach( (row, j, arr) => {
 
-      if(!sprite) return;
-      // if(el.color === 'none') return;
-      // if(el.color === 'red')  sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_red.png"].texture);
-      // else sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_yellow.png"].texture);
-      sprite.width = 64;
-      sprite.height = 64;
-      sprite.position.set(64*(i%7), this.pushDown(i%7, arr));
-console.log(row);
+        const token = new Token(row.color);
+        const sprite = token.create();
 
-      this.app.stage.addChild(sprite);
+        if(!sprite) return;
+        console.log(row.color);
+        // if(el.color === 'none') return;
+        // if(el.color === 'red')  sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_red.png"].texture);
+        // else sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_yellow.png"].texture);
+        sprite.width = 64;
+        sprite.height = 64;
+        sprite.position.set(64*i, 64*j);
+
+        this.app.stage.addChild(sprite);
+
+      });
     });
 
   }
 
-  pushDown(col, b) {
-    let row = 0;
-    while(row <= b.length) {
-      if (b[col + 7][row].status === 'occupied' && b[col + 7].status) {
-        return col;
-      }
-      row += 7;
-    }
-  }
+  // pushDown(col, b) {
+  //   let row = 0;
+  //   while(row <= b.length) {
+  //     if (b[col + 7][row].status === 'occupied' && b[col + 7].status) {
+  //       return col;
+  //     }
+  //     row += 7;
+  //   }
+  // }
 
-  putToken(board, column, row, color = 'red') {
+  putToken(board, col, row = 0, color = 'red') {
 
     const token = new Token(color);
     const sprite = token.create();
@@ -91,21 +96,27 @@ console.log(row);
 
     sprite.width = 64;
     sprite.height = 64;
-    sprite.position.set(64*column, 0);
+    sprite.position.set(64*col, 0);
 
     const dropTick = new PIXI.ticker.Ticker();
     dropTick.autoStart = true;
-    dropTick.add( (delta) => {
+    dropTick.add( () => {
 
-      console.log(delta);
-      const i = Math.floor(sprite.y / 64) + 1;
-      if(board.boardArr[i].status === 'occupied' || sprite.y >= 5*64) {
-        const x = column;
+      const i = Math.floor(sprite.y / 64);
+      console.log(board.boardArr[col][i]);
+      console.log(i);
+      if(board.boardArr[col][0].status === 'occupied') return dropTick.stop();
+      //if (i > 5) return dropTick.stop();
+      if(!board.boardArr[col][i+1]) {
+        board.boardArr[col][5].color = color;
+        board.boardArr[col][5].status = 'occupied';
 
-        board.boardArr[x].color = color;
-        board.boardArr[x].status = 'occupied';
+      };
+      if(board.boardArr[col][i+1].status === 'occupied') {
+        board.boardArr[col][i].color = color;
+        board.boardArr[col][i].status = 'occupied';
         this.drawBoard(board);
-        console.log(sprite.y +' '+ column);
+        console.log('AAAAAAAAAAAAA');
         sprite.destroy();
         dropTick.stop();
       }
