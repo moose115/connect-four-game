@@ -64,12 +64,22 @@ export default class Game {
       // else sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/token_yellow.png"].texture);
       sprite.width = 64;
       sprite.height = 64;
-      sprite.position.set(64*(i%7), 64*(row%6));
+      sprite.position.set(64*(i%7), this.pushDown(i%7, arr));
 console.log(row);
 
       this.app.stage.addChild(sprite);
     });
 
+  }
+
+  pushDown(col, b) {
+    let row = 0;
+    while(row <= b.length) {
+      if (b[col + 7][row].status === 'occupied' && b[col + 7].status) {
+        return col;
+      }
+      row += 7;
+    }
   }
 
   putToken(board, column, row, color = 'red') {
@@ -92,15 +102,15 @@ console.log(row);
       if(board.boardArr[i].status === 'occupied' || sprite.y >= 5*64) {
         const x = column;
 
-        board.boardArr[i].color = color;
-        board.boardArr[i].status = 'occupied';
+        board.boardArr[x].color = color;
+        board.boardArr[x].status = 'occupied';
         this.drawBoard(board);
         console.log(sprite.y +' '+ column);
         sprite.destroy();
         dropTick.stop();
       }
       else {
-        sprite.y += 2;
+        sprite.y += 20;
 
       }
     });
