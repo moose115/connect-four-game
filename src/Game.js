@@ -50,6 +50,7 @@ export default class Game {
       }
     }
     //console.table(board.boardArr);
+    this.checkWin(board);
   }
 
   drawTokens(boardArr, column, row = 0, board) {
@@ -109,6 +110,9 @@ export default class Game {
       if(!board.boardArr[col][i+1]) {
         board.boardArr[col][5].color = color;
         board.boardArr[col][5].status = 'occupied';
+        this.drawBoard(board);
+        sprite.destroy();
+        dropTick.stop();
         return;
 
       }
@@ -117,7 +121,6 @@ export default class Game {
         board.boardArr[col][i].status = 'occupied';
         this.drawBoard(board);
         sprite.destroy();
-        this.checkWin(board);
         dropTick.stop();
       }
       else {
@@ -134,13 +137,26 @@ export default class Game {
 
   checkWin(board) {
 
+    let color, counter = 0;
     //check column
     for (let col = 0; col < board.boardArr.length; col++) {
-      let color, counter = 0;
 
       for(let row = 0; row < board.boardArr[col].length; row++) {
 
         if(color !== board.boardArr[col][row].color) counter = 0;
+        color = board.boardArr[col][row].color;
+        counter++;
+        if(counter >= 4 && color !== 'none') return alert(color + ' wins!');
+      }
+    }
+
+    //check row
+    for (let row = 0; row < board.boardArr[row].length; row++) {
+
+      for(let col = 0; col < board.boardArr.length; col++) {
+
+        if(color !== board.boardArr[col][row].color) counter = 0;
+        console.log(board.boardArr[col][row].color + col + row);
         color = board.boardArr[col][row].color;
         counter++;
         if(counter >= 4 && color !== 'none') return alert(color + ' wins!');
