@@ -89,6 +89,8 @@ export default class Game {
 
   putToken(board, col, row = 0, color = 'red') {
 
+    if(board.boardArr[col][0].status === 'occupied') return alert('col is ful');
+
     const token = new Token(color);
     const sprite = token.create();
 
@@ -103,21 +105,19 @@ export default class Game {
     dropTick.add( () => {
 
       const i = Math.floor(sprite.y / 64);
-      console.log(board.boardArr[col][i]);
-      console.log(i);
-      if(board.boardArr[col][0].status === 'occupied') return dropTick.stop();
-      //if (i > 5) return dropTick.stop();
+      if (i > 5) return dropTick.stop();
       if(!board.boardArr[col][i+1]) {
         board.boardArr[col][5].color = color;
         board.boardArr[col][5].status = 'occupied';
+        return;
 
-      };
+      }
       if(board.boardArr[col][i+1].status === 'occupied') {
         board.boardArr[col][i].color = color;
         board.boardArr[col][i].status = 'occupied';
         this.drawBoard(board);
-        console.log('AAAAAAAAAAAAA');
         sprite.destroy();
+        this.checkWin(board);
         dropTick.stop();
       }
       else {
@@ -130,5 +130,21 @@ export default class Game {
     this.app.stage.addChild(sprite);
 
     this.drawBoard(board);
+  }
+
+  checkWin(board) {
+
+    //check column
+    for (let col = 0; col < board.boardArr.length; col++) {
+      let color, counter = 0;
+
+      for(let row = 0; row < board.boardArr[col].length; row++) {
+
+        if(color !== board.boardArr[col][row].color) counter = 0;
+        color = board.boardArr[col][row].color;
+        counter++;
+        if(counter >= 4 && color !== 'none') return alert(color + ' wins!');
+      }
+    }
   }
 }
