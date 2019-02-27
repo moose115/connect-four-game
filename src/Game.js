@@ -125,14 +125,11 @@ export default class Game {
       }
       else {
         sprite.y += 20;
-
       }
     });
 
 
     this.app.stage.addChild(sprite);
-
-    this.drawBoard(board);
   }
 
   checkWin(board) {
@@ -156,11 +153,79 @@ export default class Game {
       for(let col = 0; col < board.boardArr.length; col++) {
 
         if(color !== board.boardArr[col][row].color) counter = 0;
-        console.log(board.boardArr[col][row].color + col + row);
         color = board.boardArr[col][row].color;
         counter++;
         if(counter >= 4 && color !== 'none') return alert(color + ' wins!');
       }
     }
+
+    //check diagonal
+    const fDir = [1, 1], bDir = [-1, 1]; //diagonal directions
+    let didBothDirs = true;
+
+    do {
+
+      let dir;
+
+
+      didBothDirs = (didBothDirs === false ? true : false);
+
+      if(didBothDirs) { // '\' diag dir
+
+        dir = fDir;
+
+        for (let col = 0; col < 4; col++) {
+
+
+          for(let row = 0; row < 3; row++) {
+
+            let offsetCol = col;
+            let offsetRow = row;
+
+            for(let i = 0; i < 4; i++) {
+
+              console.log(offsetCol);
+              if(offsetCol > 6 || offsetRow > 5) continue;
+              if(color !== board.boardArr[offsetCol][offsetRow].color) counter = 0;
+              color = board.boardArr[offsetCol][offsetRow].color;
+              counter++;
+              if(counter >= 4 && color !== 'none') return alert(color + ' wins!');
+              offsetRow += dir[1];
+              offsetCol += dir[0];
+
+            }
+          }
+        }
+
+    } else { // '/' diag dir
+        dir = bDir;
+
+        for (let col = 6; col > 0; col--) {
+
+
+          for(let row = 0; row < 3; row++) {
+
+            let offsetCol = col;
+            let offsetRow = row;
+
+            for(let i = 0; i < 4; i++) {
+
+              console.log(offsetCol);
+              if(offsetCol < 0 || offsetRow > 5) continue;
+              if(color !== board.boardArr[offsetCol][offsetRow].color) counter = 0;
+              color = board.boardArr[offsetCol][offsetRow].color;
+              counter++;
+              if(counter >= 4 && color !== 'none') return alert(color + ' wins!');
+              offsetCol += dir[0];
+              offsetRow += dir[1];
+
+            }
+          }
+        }
+
+    }
+
+    } while(!didBothDirs)
   }
+
 }
