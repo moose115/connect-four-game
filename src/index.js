@@ -14,7 +14,7 @@ app.renderer.backgroundColor = 0xAAAAAA;
 app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
 app.renderer.autoResize = true;
-app.renderer.resize(window.innerWidth, window.innerHeight);
+app.renderer.resize(7*64, 7*64);
 
 PIXI.loader
   .add([

@@ -9,7 +9,15 @@ require('electron-reload')(__dirname, {
 
 function createWindow() {
 
-    let win = new BrowserWindow({width: 800, height: 800, icon: './src/vendor/icon.png'});
+    const options = {
+      width: 7*64,
+      height: 7*64,
+      icon: './src/vendor/icon.png',
+      resizable: false,
+      useContentSize: true
+    };
+
+    let win = new BrowserWindow(options);
 
     win.loadURL(`file://${__dirname}/dist/index.html`);
     // win.loadFile('index.html');
