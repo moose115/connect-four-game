@@ -5,11 +5,17 @@ import Token from './Token';
 
 export default class Game {
 
-  constructor(app) {
+  constructor(app, menu) {
     this.app = app;
     this.currentColor = 'red';
     this.boardOffsetY = 64;
     this.spriteHover = [];
+
+    console.log(menu);
+    this.menu = menu;
+
+    this.gameScene = new PIXI.Container();
+    this.app.stage.addChild(this.gameScene);
   }
 
   setup() {
@@ -22,22 +28,21 @@ export default class Game {
       rectangle.beginFill(0x505050);
       rectangle.drawRect(i*64, 0+this.boardOffsetY, 64, 6*64);
       rectangle.endFill();
-      this.app.stage.addChild(rectangle);
+      this.gameScene.addChild(rectangle);
       rectangle.interactive = true;
       rectangle.buttonMode = true;
       rectangle.on('click', () => {
-        console.log(i);
         this.putToken(board, i, 0, this.currentColor);
         this.currentColor = (this.currentColor === 'red' ? 'yellow' : 'red');
 
-        this.app.stage.removeChild(this.spriteHover[i]);
+        this.gameScene.removeChild(this.spriteHover[i]);
 
         this.tokenHover = new Token(this.currentColor);
         this.spriteHover[i] = this.tokenHover.create();
         this.spriteHover[i].position.set(i * 64, 0);
         this.spriteHover[i].width = 64;
         this.spriteHover[i].height = 64;
-        this.app.stage.addChild(this.spriteHover[i]);
+        this.gameScene.addChild(this.spriteHover[i]);
 
       });
       rectangle.on('mouseover', () => {
@@ -46,9 +51,9 @@ export default class Game {
         this.spriteHover[i].position.set(i * 64, 0);
         this.spriteHover[i].width = 64;
         this.spriteHover[i].height = 64;
-        this.app.stage.addChild(this.spriteHover[i]);
+        this.gameScene.addChild(this.spriteHover[i]);
         rectangle.on('mouseout', () => {
-          this.app.stage.removeChild(this.spriteHover[i]);
+          this.gameScene.removeChild(this.spriteHover[i]);
         });
       });
     }
@@ -63,7 +68,7 @@ export default class Game {
 
 
         const sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/board.png"].texture);
-        this.app.stage.addChild(sprite);
+        this.gameScene.addChild(sprite);
         const x = 64*(col);
         const y = 64*(row)+this.boardOffsetY;
         sprite.position.set(x, y);
@@ -89,7 +94,7 @@ export default class Game {
         sprite.height = 64;
         sprite.position.set(64*i, 64*j+this.boardOffsetY);
 
-        this.app.stage.addChild(sprite);
+        this.gameScene.addChild(sprite);
 
       });
     });
@@ -137,7 +142,7 @@ export default class Game {
     });
 
 
-    this.app.stage.addChild(sprite);
+    this.gameScene.addChild(sprite);
   }
 
   checkWin(board) {
@@ -153,7 +158,7 @@ export default class Game {
         if(color !== board.boardArr[col][row].color) counter = 0;
         color = board.boardArr[col][row].color;
         counter++;
-        if(counter >= 4 && color !== 'none') return alert(color + ' wins!');
+        if(counter >= 4 && color !== 'none') return this.endGame(color);
       }
     }
 
@@ -167,7 +172,7 @@ export default class Game {
         if(color !== board.boardArr[col][row].color) counter = 0;
         color = board.boardArr[col][row].color;
         counter++;
-        if(counter >= 4 && color !== 'none') return alert(color + ' wins!');
+        if(counter >= 4 && color !== 'none') return this.endGame(color);
       }
     }
 
@@ -189,12 +194,11 @@ export default class Game {
 
             for(let i = 0; i < 4; i++) {
 
-              console.log(offsetCol);
               if(offsetCol > 6 || offsetRow > 5) continue;
               if(color !== board.boardArr[offsetCol][offsetRow].color) counter = 0;
               color = board.boardArr[offsetCol][offsetRow].color;
               counter++;
-              if(counter >= 4 && color !== 'none') return alert(color + ' wins! \\');
+              if(counter >= 4 && color !== 'none') return this.endGame(color);
               offsetRow += fDir[1];
               offsetCol += fDir[0];
 
@@ -216,12 +220,11 @@ export default class Game {
 
         for(let i = 0; i < 4; i++) {
 
-          console.log(offsetCol);
           if(offsetCol < 0 || offsetRow > 5) continue;
           if(color !== board.boardArr[offsetCol][offsetRow].color) counter = 0;
           color = board.boardArr[offsetCol][offsetRow].color;
           counter++;
-          if(counter >= 4 && color !== 'none') return alert(color + ' wins! /');
+          if(counter >= 4 && color !== 'none') return this.endGame(color);
           offsetCol += bDir[0];
           offsetRow += bDir[1];
 
@@ -234,4 +237,9 @@ export default class Game {
 
   }
 
+  endGame(color) {
+    alert(color + ' wins!');
+    this.app.stage.removeChild(this.gameScene);
+    this.menu.toggleMenu();
+  }
 }
