@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "colyseus": "^0.9.33",
     "electron": "^4.0.4",
     "electron-reload": "^1.4.0",
+    "express": "^4.16.4",
     "lodash": "^4.17.11",
     "pixi.js": "^4.8.5",
     "webpack": "^4.29.3",

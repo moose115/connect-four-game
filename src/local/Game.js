@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
-import Board from './Board';
-import Token from './Token';
+import Board from '../Board';
+import Token from '../Token';
 
 
 export default class Game {

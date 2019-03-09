@@ -19,3 +19,9 @@ TO DOS:
   -locking piece on board #check
   -piece over-board hover effect #check
   -sections based on columns #check
+
+
+Multiplayer checklist:
+  -buttons: host and join
+  -connection pending
+  -multiplayer variant of the game

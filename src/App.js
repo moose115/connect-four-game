@@ -1,6 +1,9 @@
 import * as PIXI from 'pixi.js';
-import Game from './Game';
+
+import Game from './local/Game';
 import Menu from './Menu';
+
+//import GameMulti from './server/GameMulti';
 
 export default class App {
 
@@ -14,8 +17,25 @@ export default class App {
       },
       {
         text: 'Start Network Game',
-        function: function() {
-          console.log('To be done');
+        function: () => {
+
+          this.buttonsMulti = [
+            {
+              text: 'Host Game',
+              function: () => {
+                this.startHost();
+              }
+            },
+            {
+              text: 'Join Game',
+              function: () => {
+                console.log('to do');
+              }
+            }
+          ];
+
+          const multiMenu = new Menu(this.app, this.buttonsMulti);
+          multiMenu.drawMenu();
         }
       }
     ];
@@ -31,5 +51,11 @@ export default class App {
     const g = new Game(app, menu);
     g.setup();
     console.log(g);
+  }
+
+  startHost() {
+
+    // const gm = new GameMulti();
+    // gm.createHost();
   }
 }
