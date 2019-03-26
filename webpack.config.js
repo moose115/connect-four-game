@@ -8,7 +8,7 @@ module.exports = {
   },
   watch: true,
   watchOptions: {
-    ignored: /node_modules/
+    ignored: ['server', 'node_modules']
   },
   mode: "development"
 };

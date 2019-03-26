@@ -9,6 +9,8 @@ const gameServer = new colyseus.Server({
   server: http.createServer(expApp)
 });
 
+expApp.use(express.static(__dirname + '/../dist'));
 gameServer.listen(port);
+
 
 console.log('Started!');

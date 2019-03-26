@@ -67,7 +67,7 @@ export default class Game {
       for (let row = 0; row < 6; row++) {
 
 
-        const sprite = new PIXI.Sprite(PIXI.loader.resources["../src/vendor/board.png"].texture);
+        const sprite = new PIXI.Sprite(PIXI.loader.resources["./vendor/board.png"].texture);
         this.gameScene.addChild(sprite);
         const x = 64*(col);
         const y = 64*(row)+this.boardOffsetY;

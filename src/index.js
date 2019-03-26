@@ -15,9 +15,9 @@ pixiApp.renderer.resize(7*64, 7*64);
 
 PIXI.loader
   .add([
-    "../src/vendor/board.png",
-    "../src/vendor/token_red.png",
-    "../src/vendor/token_yellow.png"
+    "./vendor/board.png",
+    "./vendor/token_red.png",
+    "./vendor/token_yellow.png"
   ])
   .load( () => {
     const app = new App(pixiApp);
