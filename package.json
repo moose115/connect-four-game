@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "colyseus": "^0.9.33",
+    "colyseus.js": "^0.10.2",
     "electron": "^4.0.4",
     "electron-reload": "^1.4.0",
     "express": "^4.16.4",

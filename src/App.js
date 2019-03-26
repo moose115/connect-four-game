@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js';
 
-import Game from './local/Game';
+import GameLocal from './local/GameLocal';
 import Menu from './Menu';
 
 //import GameMulti from './server/GameMulti';

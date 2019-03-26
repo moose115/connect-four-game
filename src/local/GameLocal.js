@@ -3,7 +3,7 @@ import Board from '../Board';
 import Token from '../Token';
 
 
-export default class Game {
+export default class GameLocal {
 
   constructor(app, menu) {
     this.app = app;
