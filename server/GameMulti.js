@@ -11,7 +11,7 @@ const gameServer = new colyseus.Server({
 
 expApp.use(express.static(__dirname + '/../dist'));
 gameServer.listen(port);
-gameServer.register('game', require(./rooms/Game));
+gameServer.register('game', require('./rooms/Game'));
 
 
 console.log('Started!');

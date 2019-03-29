@@ -1,6 +1,4 @@
-import * as PIXI from 'pixi.js';
-
-export default class Board {
+module.exports = class Board {
 
 
   constructor() {
