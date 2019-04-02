@@ -31,13 +31,21 @@ export default class GameLocal {
       this.gameScene.addChild(rectangle);
       rectangle.interactive = true;
       rectangle.buttonMode = true;
-      rectangle.on('click', () => {
+      rectangle.on('pointerdown', () => {
         this.putToken(board, i, 0, this.currentColor);
         this.currentColor = (this.currentColor === 'red' ? 'yellow' : 'red');
 
         this.gameScene.removeChild(this.spriteHover[i]);
 
-        this.tokenHover = new Token(this.currentColor);
+        if( !(navigator.userAgent.match(/Android/i)
+          || navigator.userAgent.match(/webOS/i)
+          || navigator.userAgent.match(/iPhone/i)
+          || navigator.userAgent.match(/iPad/i)
+          || navigator.userAgent.match(/iPod/i)
+          || navigator.userAgent.match(/BlackBerry/i)
+          || navigator.userAgent.match(/Windows Phone/i)
+          )) this.tokenHover = new Token(this.currentColor);
+
         this.spriteHover[i] = this.tokenHover.create();
         this.spriteHover[i].position.set(i * 64, 0);
         this.spriteHover[i].width = 64;

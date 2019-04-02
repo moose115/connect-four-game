@@ -13,3 +13,10 @@ body {
 canvas {
 
 }
+
+@media(max-width: calc(7 * 64px)) {
+    canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+}

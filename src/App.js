@@ -1,22 +1,13 @@
 import * as Colyseus from 'colyseus.js';
 
 import GameLocal from './local/GameLocal';
+import GameClient from './client/GameClient';
 import Menu from './Menu';
 
 export default class App {
 
 
   constructor(app) {
-
-    // let client = new Colyseus.Client('ws://localhost:3000');
-
-    // let room = client.join('game');
-
-    // room.onJoin.add( () => {
-
-    //   console.log('Joined the room!');
-
-    // });
 
     this.app = app;
 
@@ -26,51 +17,15 @@ export default class App {
         function: this.startGame
       },
       {
-        text: 'Start Network Game',
+        text: 'Join Network Game',
         function: () => {
 
-          this.buttonsMulti = [
-            {
-              text: 'Host Game',
-              function: () => {
-                this.startHost();
-              }
-            },
-            {
-              text: 'Join Game',
-              function: () => {
-                let client = new Colyseus.Client('ws://localhost:3000');
-                client.onError.add(function(err) {
-                  console.log("something wrong happened", err);
-                });
-                console.log(client.getAvailableRooms('game', (r, e) => {
-                  if(e) console.error(e);
-                  r.forEach(element => {
-                    console.log(element);
-                    
-                  });
-                  
-                }));
-                
-                let room = client.join('game');
-                room.onError.add(function(err) {
-                  console.log("oops, error ocurred:");
-                  console.log(err);
-                });
-                room.onJoin.add( () => {
-                  console.log('Joined the room!');
-                  
-                });
-              }
-            }
-          ];
-
-          const multiMenu = new Menu(this.app, this.buttonsMulti);
-          multiMenu.drawMenu();
+          this.joinHost();
         }
       }
     ];
     this.menu = new Menu(this.app, this.button);
+    
   }
 
   init() {
@@ -84,9 +39,14 @@ export default class App {
     console.log(g);
   }
 
-  startHost() {
+  async startHost() {
 
-    // const gm = new GameMulti();
-    // gm.createHost();
+    const gc = new GameClient(this.app, this.menu);
+    gc.setup();
+  }
+
+  joinHost() {
+
+    const gc = new GameClient(this.app, this.menu);
   }
 }
