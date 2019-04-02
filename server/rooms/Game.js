@@ -28,6 +28,10 @@ module.exports = class Game extends colyseus.Room {
     switch(m.task) {
       case 'putToken': this.putToken(m.col, m.row, m.color); 
         break;
+
+      case 'dropToken': {
+        this.broadcast({task: m.task, col: m.col, color: m.color}, {except: c});
+      }
       
     }
   }

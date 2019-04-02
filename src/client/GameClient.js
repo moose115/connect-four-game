@@ -17,7 +17,7 @@ export default class GameClient {
 
     this.room = this.client.join('game');
 
-    this.room.onMessage.add( (m) => {
+    this.room.onMessage.add( (m) => {      
 
       switch(m.task) {
 
@@ -39,6 +39,18 @@ export default class GameClient {
           this.currentColor = m.currentColor;
         }
         break;
+
+        case 'dropToken': {
+          this.dropToken(this.board, m.col, m.color);
+          
+        }
+        break;
+        case 'leave' : {
+          alert('Your opponent left the game.');
+          endGame(this.yourColor);
+        }
+        break;
+        default: throw new Error('Illegal task.');
       }
     });
 
@@ -115,11 +127,12 @@ export default class GameClient {
 
   drawBoard(board) {
 
+    
     this.drawTokens(board.boardArr);
     for (let col = 0; col < 7; col++) {
       for (let row = 0; row < 6; row++) {
-
-
+        
+        
         const sprite = new PIXI.Sprite(PIXI.loader.resources["./vendor/board.png"].texture);
         this.gameScene.addChild(sprite);
         const x = 64*(col);
@@ -130,37 +143,38 @@ export default class GameClient {
       }
     }
   }
-
+  
   drawTokens(boardArr, column, row = 0, board) {
-
+    
     boardArr.forEach( (col, i) => {
-
+      
       col.forEach( (row, j, arr) => {
-
+        
         const token = new Token(row.color);
         const sprite = token.create();
-
+        
         if(!sprite) return;
         sprite.width = 64;
         sprite.height = 64;
         sprite.position.set(64*i, 64*j+this.boardOffsetY);
-
+        
         this.gameScene.addChild(sprite);
-
+        
       });
     });
-
+    
   }
-
+  
   putToken(board, col, row = 0, color = 'red') {
-
+    this.room.send({task: 'dropToken', col: col, color: color});
+    
     if(board.boardArr[col][0].status === 'occupied') return alert('col is ful');
-
+    
     const token = new Token(color);
     const sprite = token.create();
-
+    
     if(!sprite) return;
-
+    
     sprite.width = 64;
     sprite.height = 64;
     sprite.position.set(64*col, 0+this.boardOffsetY);
@@ -211,6 +225,42 @@ export default class GameClient {
 
     this.gameScene.addChild(sprite);
   }
+
+  dropToken(board, col, color) {
+    const token = new Token(color);
+    const sprite = token.create();
+
+    if(!sprite) return;
+
+    sprite.width = 64;
+    sprite.height = 64;
+    sprite.position.set(64*col, 0+this.boardOffsetY);
+
+    const dropTick = new PIXI.ticker.Ticker();
+    dropTick.autoStart = true;
+    dropTick.add( () => {
+
+      const i = Math.floor(sprite.y / 64) - 1;
+      if (i > 5) return dropTick.stop();
+      if(!board.boardArr[col][i+1]) {
+        this.drawBoard(board);
+        sprite.destroy();
+        dropTick.stop();
+        return;
+
+      }
+      if(board.boardArr[col][i+1].status === 'occupied') {
+        this.drawBoard(board);
+        sprite.destroy();
+        dropTick.stop();
+      }
+      else {
+        sprite.y += 20;
+      }
+    });
+    this.gameScene.addChild(sprite);
+  }
+
 
   endGame(color) {
     alert(color + ' wins!');
