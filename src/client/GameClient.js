@@ -12,7 +12,7 @@ export default class GameClient {
 
   constructor(app, menu) {
 
-    this.client = new Colyseus.Client(`${window.location.protocol.replace("http", "ws")}//${window.location.hostname}:3000`);
+    this.client = new Colyseus.Client(endpoint);
     
 
     this.room = this.client.join('game');
