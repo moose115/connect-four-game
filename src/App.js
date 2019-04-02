@@ -36,7 +36,6 @@ export default class App {
   startGame(app, menu) {
     const g = new GameLocal(app, menu);
     g.setup();
-    console.log(g);
   }
 
   async startHost() {

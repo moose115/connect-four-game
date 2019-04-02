@@ -10,13 +10,10 @@ module.exports = class Game extends colyseus.Room {
     this.currentColor = 'red';
     this.maxClients = 2;
 
-    console.log('Room init!');
     
   }
 
   onJoin(client) {
-
-    console.log(client.id + ' joined!', this.clients.length);
 
     if(this.clients.length === 2) {
       this.send(this.clients[0], {task: 'setColor', color: 'red', currentColor: this.currentColor});

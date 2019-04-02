@@ -11,7 +11,6 @@ export default class GameLocal {
     this.boardOffsetY = 64;
     this.spriteHover = [];
 
-    console.log(menu);
     this.menu = menu;
 
     this.gameScene = new PIXI.Container();
@@ -97,7 +96,6 @@ export default class GameLocal {
         const sprite = token.create();
 
         if(!sprite) return;
-        console.log(row.color);
         sprite.width = 64;
         sprite.height = 64;
         sprite.position.set(64*i, 64*j+this.boardOffsetY);
